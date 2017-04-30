@@ -1,32 +1,9 @@
 <?php
 
 /**
- * This file is part of the Symfony3Custom-coding-standard (phpcs standard)
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
- */
-
-/**
- * Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff.
- *
  * Throws errors if symfony's naming conventions are not met.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
  */
-class Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff
-    implements PHP_CodeSniffer_Sniff
+class Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff implements PHP_CodeSniffer_Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -48,7 +25,7 @@ class Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff
             T_INTERFACE,
             T_TRAIT,
             T_EXTENDS,
-            T_ABSTRACT
+            T_ABSTRACT,
         );
     }
 
@@ -63,11 +40,10 @@ class Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
-        $tokens   = $phpcsFile->getTokens();
-        $line     = $tokens[$stackPtr]['line'];
+        $tokens = $phpcsFile->getTokens();
+        $line = $tokens[$stackPtr]['line'];
 
         while ($tokens[$stackPtr]['line'] == $line) {
-
             /*
              * Suffix interfaces with Interface;
              */
@@ -121,6 +97,26 @@ class Symfony3Custom_Sniffs_NamingConventions_ValidClassNameSniff
                             'InvalidExceptionName'
                         );
                     }
+                }
+                break;
+            }
+
+            /*
+             * Prefix abstract classes with Abstract.
+             */
+            if ('T_ABSTRACT' == $tokens[$stackPtr]['type']) {
+                $name = $phpcsFile->findNext(T_STRING, $stackPtr);
+                $function = $phpcsFile->findNext(T_FUNCTION, $stackPtr);
+
+                // Making sure we're not dealing with an abstract function
+                if ($name && (false === $function || $name < $function)
+                    && substr($tokens[$name]['content'], 0, 8) != 'Abstract'
+                ) {
+                    $phpcsFile->addError(
+                        'Abstract class name is not prefixed with "Abstract"',
+                        $stackPtr,
+                        'InvalidAbstractName'
+                    );
                 }
                 break;
             }

@@ -1,32 +1,9 @@
 <?php
 
 /**
- * This file is part of the Symfony3Custom-coding-standard (phpcs standard)
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
- */
-
-/**
- * Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff.
- *
  * Throws a warning if an object isn't instantiated using parenthesis.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
  */
-class Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff
-    implements PHP_CodeSniffer_Sniff
+class Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff implements PHP_CodeSniffer_Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -34,9 +11,8 @@ class Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff
      * @var array
      */
     public $supportedTokenizers = array(
-                                   'PHP',
-                                  );
-
+        'PHP',
+    );
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -46,8 +22,8 @@ class Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff
     public function register()
     {
         return array(
-                T_NEW,
-               );
+            T_NEW,
+        );
     }
 
     /**
@@ -67,6 +43,7 @@ class Symfony3Custom_Sniffs_Objects_ObjectInstantiationSniff
             T_NS_SEPARATOR,
             T_VARIABLE,
             T_STATIC,
+            T_SELF,
         );
 
         $object = $stackPtr;

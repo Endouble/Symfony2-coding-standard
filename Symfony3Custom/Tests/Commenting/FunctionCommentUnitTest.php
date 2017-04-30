@@ -1,33 +1,12 @@
 <?php
 
 /**
- * This file is part of the Symfony3Custom-coding-standard (phpcs standard)
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
- */
-
-/**
  * Unit test class for the FunctionComment sniff.
  *
  * A sniff unit test checks a .inc file for expected violations of a single
  * coding standard. Expected errors and warnings are stored in this class.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
  */
-class Symfony3Custom_Tests_Commenting_FunctionCommentUnitTest
-    extends AbstractSniffUnitTest
+class Symfony3Custom_Tests_Commenting_FunctionCommentUnitTest extends AbstractSniffUnitTest
 {
     /**
      * Returns the lines where errors should occur.
@@ -41,6 +20,12 @@ class Symfony3Custom_Tests_Commenting_FunctionCommentUnitTest
     {
         return array(
             5 => 1,
+            10 => 2,
+            43 => 1,
+            48 => 2,
+            76 => 2,
+            83 => 1,
+            93 => 1,
         );
     }
 

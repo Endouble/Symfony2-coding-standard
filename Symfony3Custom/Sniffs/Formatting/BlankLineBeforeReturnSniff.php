@@ -1,32 +1,11 @@
 <?php
 
 /**
- * This file is part of the Symfony3Custom-coding-standard (phpcs standard)
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
- */
-
-/**
  * Throws errors if there's no blank line before return statements.
  * Symfony coding standard specifies: "Add a blank line before return statements,
  * unless the return is alone inside a statement-group (like an if statement);"
- *
- * PHP version 5
- *
- * @category PHP
- * @package  Symfony3Custom-coding-standard
- * @author   Authors <Symfony3Custom-coding-standard@escapestudios.github.com>
- * @license  http://spdx.org/licenses/MIT MIT License
- * @link     https://github.com/escapestudios/Symfony3Custom-coding-standard
  */
-class Symfony3Custom_Sniffs_Formatting_BlankLineBeforeReturnSniff
-    implements PHP_CodeSniffer_Sniff
+class Symfony3Custom_Sniffs_Formatting_BlankLineBeforeReturnSniff implements PHP_CodeSniffer_Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
@@ -59,9 +38,9 @@ class Symfony3Custom_Sniffs_Formatting_BlankLineBeforeReturnSniff
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
-        $tokens          = $phpcsFile->getTokens();
-        $current         = $stackPtr;
-        $previousLine    = $tokens[$stackPtr]['line'] - 1;
+        $tokens = $phpcsFile->getTokens();
+        $current = $stackPtr;
+        $previousLine = $tokens[$stackPtr]['line'] - 1;
         $prevLineTokens  = array();
 
         while ($current >= 0 && $tokens[$current]['line'] >= $previousLine) {
@@ -81,11 +60,22 @@ class Symfony3Custom_Sniffs_Formatting_BlankLineBeforeReturnSniff
             || $prevLineTokens[0] === 'T_COLON')
         ) {
             return;
-        } else if (count($prevLineTokens) > 0) {
-            $phpcsFile->addError(
+        } elseif (count($prevLineTokens) > 0) {
+            $fix = $phpcsFile->addFixableError(
                 'Missing blank line before return statement',
-                $stackPtr
+                $stackPtr,
+                'MissedBlankLineBeforeRetrun'
             );
+
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+                $i = 1;
+                while ($tokens[$stackPtr-$i]['type'] == "T_WHITESPACE") {
+                    $i++;
+                }
+                $phpcsFile->fixer->addNewLine($stackPtr-$i);
+                $phpcsFile->fixer->endChangeset();
+            }
         }
 
         return;
